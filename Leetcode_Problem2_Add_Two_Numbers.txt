@@ -1,0 +1,98 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* addNode(struct ListNode* head,int value)
+{
+    struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    node->val = value;
+    node->next = NULL;
+    if(!node)
+        return NULL;
+    if(!head)
+        return node;
+    struct ListNode* ptr = head;
+    while(ptr->next)
+    {
+        ptr = ptr->next;
+    }
+    ptr->next = node;
+    return head;
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2)
+{
+    if(!l1 && !l2)
+        return NULL;
+    else if(!l2)
+        return l1;
+    else if(!l1)
+        return l2;
+    else
+    {
+        struct ListNode* add_list = NULL;
+        int carry = 0;
+        while(l1 && l2)
+        {
+            if((l1->val + l2->val + carry) >= 10)
+            {
+                add_list = addNode(add_list,(l1->val + l2->val + carry)%10);
+                carry = 1;
+            }
+            else
+            {
+                add_list = addNode(add_list,l1->val + l2->val + carry);
+                carry = 0;
+            }
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+        while(l1)
+        {
+            if(carry)
+            {
+                if((l1->val + carry) >= 10)
+                {
+                    add_list = addNode(add_list,(l1->val + carry)%10);
+                    carry = 1;
+                }
+                else
+                {
+                    add_list = addNode(add_list,l1->val+carry);
+                    carry = 0;
+                }
+            }
+            else
+                add_list = addNode(add_list,l1->val);
+            l1 = l1->next;
+        }
+        while(l2)
+        {
+            if(carry)
+            {
+                if((l2->val + carry) >= 10)
+                {
+                    add_list = addNode(add_list,(l2->val + carry)%10);
+                    carry = 1;
+                }
+                else
+                {
+                    add_list = addNode(add_list,l2->val+carry);
+                    carry = 0;
+                }
+            }
+            else
+                add_list = addNode(add_list,l2->val);
+            l2 = l2->next;
+        }
+        if(carry)
+            add_list = addNode(add_list,1);
+        return add_list;
+    }
+}         
+
+
+
